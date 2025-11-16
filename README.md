@@ -115,3 +115,70 @@ If you encounter issues:
 2. Verify that the required ports are available on your system
 3. Check the container logs for error messages
 4. Ensure net-tools is installed for port checking functionality
+
+## JavaScript Console Commands
+
+### Connecting to Geth Console
+
+```bash
+# Attach to the running node console
+docker exec -it inri-miner geth attach /root/inri/geth.ipc
+```
+
+### Useful JavaScript Commands
+
+#### Balance Check
+```javascript
+// Check your wallet balance
+eth.getBalance("0xYourWalletAddress")
+
+// Convert to ethers (if it's in wei)
+web3.fromWei(eth.getBalance("0xYourWalletAddress"), "ether")
+```
+
+#### Block Information
+```javascript
+// Latest block number
+eth.blockNumber
+
+// Details of the latest block
+eth.getBlock("latest")
+
+// Latest block number (readable format)
+eth.getBlockByNumber("latest").number
+
+// Miner address of the latest block
+eth.getBlockByNumber("latest").miner
+```
+
+#### Check if your address is the miner
+```javascript
+// Compare miner address with yours
+eth.getBlockByNumber("latest").miner === "0xYourWalletAddress"
+```
+
+#### Count blocks mined by your address
+```javascript
+var count = 0;
+var yourAddress = "0xYourWalletAddress";
+var lastBlock = eth.blockNumber;
+
+for (var i = 0; i <= lastBlock; i++) {
+    var block = eth.getBlock(i);
+    if (block.miner === yourAddress) {
+        count++;
+    }
+}
+
+console.log("Number of blocks mined by your address: " + count);
+```
+
+#### Short version to count mined blocks
+```javascript
+var count = 0; var yourAddress = "0xYourWalletAddress"; var lastBlock = eth.blockNumber; for (var i = 0; i <= lastBlock; i++) { var block = eth.getBlock(i); if (block.miner === yourAddress) { count++; } } count;
+```
+
+#### Exit the console
+```javascript
+exit
+```
