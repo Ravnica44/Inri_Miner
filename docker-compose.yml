@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  inri-miner:
+    build: .
+    container_name: inri-miner
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+      - "30303:30303"
+      - "30303:30303/udp"
+    environment:
+      - WALLET=${WALLET}
+      - NETWORK_ID=3777
+      - HTTP_PORT=8545
+      - WS_PORT=8546
+      - NETWORK_PORT=30303
+      - MINER_THREADS=${MINER_THREADS}
+      - BOOTNODES=enode://5c7c744a9ac53fdb9e529743208ebd123f11c73d973aa2cf653f3ac1bdf460b6f2a9b2aec23b8f2b9d692d8c898fe0e93dac8d7533db8926924e770969f3a46a@134.199.203.8:30303
+    volumes:
+      - inri-data:/root/inri
+    restart: unless-stopped
+
+volumes:
+  inri-data:
