@@ -31,6 +31,15 @@ find_available_port() {
     echo $port
 }
 
+# Stop and remove existing container if it exists
+# This should be done BEFORE checking port availability to free up any ports in use
+if docker ps -a --format '{{.Names}}' | grep -q '^inri-miner$'; then
+    echo "[~] Stopping existing container..." >&2
+    docker stop inri-miner >/dev/null 2>&1
+    echo "[~] Removing existing container..." >&2
+    docker rm inri-miner >/dev/null 2>&1
+fi
+
 # Default ports
 DEFAULT_HTTP_PORT=8545
 DEFAULT_WS_PORT=8546
@@ -64,14 +73,6 @@ echo "  Network Port: $NETWORK_PORT" >&2
 if [[ "$(docker images -q inri-miner 2> /dev/null)" == "" ]]; then
     echo "[~] Building Docker image..." >&2
     docker build -t inri-miner .
-fi
-
-# Stop and remove existing container if it exists
-if docker ps -a --format '{{.Names}}' | grep -q '^inri-miner$'; then
-    echo "[~] Stopping existing container..." >&2
-    docker stop inri-miner >/dev/null 2>&1
-    echo "[~] Removing existing container..." >&2
-    docker rm inri-miner >/dev/null 2>&1
 fi
 
 # Start the container with the available ports
