@@ -157,25 +157,14 @@ eth.getBlockByNumber("latest").miner
 eth.getBlockByNumber("latest").miner === "0xYourWalletAddress"
 ```
 
-#### Count blocks mined by your address
+#### Get list of blocks mined by your address
 ```javascript
-var count = 0;
-var yourAddress = "0xYourWalletAddress";
-var lastBlock = eth.blockNumber;
-
-for (var i = 0; i <= lastBlock; i++) {
-    var block = eth.getBlock(i);
-    if (block.miner === yourAddress) {
-        count++;
-    }
-}
-
-console.log("Number of blocks mined by your address: " + count);
+var yourAddress = "0xYourWalletAddress", lastBlock = eth.blockNumber, minedBlocks = []; for (var i = 0; i <= lastBlock; i++) { var block = eth.getBlock(i); if (block.miner.toLowerCase() === yourAddress.toLowerCase()) { minedBlocks.push(block.number); } } minedBlocks
 ```
 
-#### Short version to count mined blocks
+#### Count mined blocks
 ```javascript
-var count = 0; var yourAddress = "0xYourWalletAddress"; var lastBlock = eth.blockNumber; for (var i = 0; i <= lastBlock; i++) { var block = eth.getBlock(i); if (block.miner === yourAddress) { count++; } } count;
+var count = 0; var yourAddress = "0xYourWalletAddress"; var lastBlock = eth.blockNumber; for (var i = 0; i <= lastBlock; i++) { var block = eth.getBlock(i); if (block.miner.toLowerCase() === yourAddress.toLowerCase()) { count++; } } count
 ```
 
 #### Exit the console
